@@ -24,5 +24,8 @@ namespace WebApi.Models
         /// Уроки
         /// </summary>
         public List<LessonDto> Lessons { get; set; }
+
+        //-----
+        public bool Deleted { get; set; }
     }
 }

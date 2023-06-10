@@ -17,5 +17,7 @@ namespace WebApi.Models
         /// Стоимость
         /// </summary>
         public decimal Price { get; set; }
+
+        public bool Deleted { get; set; }
     }
 }

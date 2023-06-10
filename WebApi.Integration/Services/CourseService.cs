@@ -42,4 +42,21 @@ public class CourseService
     {
         return await _applicationHttpClient.CreateCourseAsync(courseModel, cookie);
     }
+
+    // My Extends
+    public async Task<HttpResponseMessage> UpdateCourseInternalAsync(int id, AddCourseModel courseModel, string cookie = null)
+    {
+        return await _applicationHttpClient.PutCourseAsync(id, courseModel, cookie);
+    }
+
+    public async Task<CourseModel> GetCourseInternalAsync(int id, string cookie = null)
+    {
+        var course = await _applicationHttpClient.GetCourseAsync(id, cookie);
+        return JsonConvert.DeserializeObject<CourseModel>(await course.Content.ReadAsStringAsync());
+    }
+
+    public async Task<HttpResponseMessage> DeleteCourseInternalAsync(int id, string cookie = null)
+    {
+        return await _applicationHttpClient.DeleteCourseAsync(id, cookie);
+    }
 }
