@@ -9,7 +9,7 @@ using WebApi.Integration.Services;
 using WebApi.Models;
 using Xunit;
 
-namespace WebApi.Integration.Tests
+namespace WebApi.Integration.Tests.Homework
 {
     public class MyTests : IClassFixture<TestFixture>
     {
