@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AutoFixture;
@@ -58,5 +59,11 @@ public class CourseService
     public async Task<HttpResponseMessage> DeleteCourseInternalAsync(int id, string cookie = null)
     {
         return await _applicationHttpClient.DeleteCourseAsync(id, cookie);
+    }
+
+    public async Task<List<CourseModel>> GetPageCourseAsync(int page, int itemsPerPage, string cookie = null)
+    {
+        var pageCourse = await _applicationHttpClient.GetPageCourseAsync(page, itemsPerPage, cookie);
+        return JsonConvert.DeserializeObject<List<CourseModel>>(await pageCourse.Content.ReadAsStringAsync());
     }
 }

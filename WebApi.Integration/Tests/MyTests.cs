@@ -1,5 +1,6 @@
 ﻿using DataAccess.Entities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -169,6 +170,19 @@ namespace WebApi.Integration.Tests
             - пейджинг (комбинация полей page и itemsPerPage) должен работать корректно (например, при наличии
         4х сущностей постраничный запрос по 2 элемента на странице первой и второй страниц списка должны дать корректные данные)
          */
+
+        [Fact]
+        public async Task FifthTest_GetPage()
+        {
+            // Arrange
+
+            // Act
+            var page = await _courseService.GetPageCourseAsync(2, 20, _courseApiCookie);
+            var copyPage = new List<CourseModel>(page);
+
+            // Assert
+            Assert.Equal(copyPage, page);
+        }
 
         // реализовать метод (смотри метод GetCourseInternalAsync в CourseService) пейджинга на уровне CourseApiClient(namespace WebApi.Integration.Services;) и CourseService(namespace WebApi.Integration.Services;)
         // ответ на запрос будет являться списком, нужно это учесть при десериализации

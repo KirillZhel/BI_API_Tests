@@ -27,5 +27,6 @@ namespace WebApi.Models
 
         //-----
         public bool Deleted { get; set; }
+        public int Id { get; set; }
     }
 }

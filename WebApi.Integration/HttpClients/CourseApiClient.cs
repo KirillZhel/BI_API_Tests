@@ -55,6 +55,12 @@ public class CourseApiClient
         return await _httpClient.DeleteAsync($"{_baseUri}/course/{id}");
     }
 
+    public async Task<HttpResponseMessage> GetPageCourseAsync(int page, int itemsPerPage, string cookie = null)
+    {
+        AddCookieIfPresent(cookie);
+        return await _httpClient.GetAsync($"{_baseUri}/course/list/{page}/{itemsPerPage}");
+    }
+
     private void AddCookieIfPresent(string cookie = null)
     {
         if (cookie != null)
