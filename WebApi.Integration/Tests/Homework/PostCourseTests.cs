@@ -39,9 +39,11 @@ namespace WebApi.Integration.Tests.Homework
 
             // Act
             var response = await _courseService.AddCourseInternalAsync(initialCourseModel, _courseApiCookie);
+            var responseMessage = await response.Content.ReadAsStringAsync();
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(Errors.Поле_Price_должно_быть_больше_нуля, responseMessage);
         }
 
         /// <summary>
@@ -54,14 +56,17 @@ namespace WebApi.Integration.Tests.Homework
             var initialCourseModel = new AddCourseModel
             {
                 Name = "    ",
-                Price = 0
+                Price = 1000
             };
 
             // Act
             var response = await _courseService.AddCourseInternalAsync(initialCourseModel, _courseApiCookie);
+            var responseMessage = await response.Content.ReadAsStringAsync();
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(Errors.Поле_Name_не_должно_быть_пустым, responseMessage);
+
         }
 
         /// <summary>

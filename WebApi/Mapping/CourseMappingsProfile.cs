@@ -15,7 +15,9 @@ namespace WebApi.Mapping
             CreateMap<CourseDto, CourseModel>();
             CreateMap<CourseModel, CourseDto>();
             CreateMap<AddCourseModel, CourseDto>()
-                .ForMember(t=>t.Lessons, r=> r.Ignore());
+                .ForMember(t => t.Lessons, r => r.Ignore())
+                .ForMember(t => t.Id, r => r.Ignore())
+                .ForMember(t => t.Deleted, r => r.Ignore());
         }
     }
 }

@@ -27,4 +27,7 @@
     <data name="Поле_Price_должно_быть_больше_нуля" xml:space="preserve">
         <value>Поле Price должно быть больше нуля</value>
     </data>
+	<data name="Поле_Name_не_должно_быть_пустым" xml:space="preserve">
+        <value>Поле Name не должно быть пустым</value>
+    </data>
 </root>

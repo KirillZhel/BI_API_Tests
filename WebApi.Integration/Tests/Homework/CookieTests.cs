@@ -29,16 +29,54 @@ namespace WebApi.Integration.Tests.Homework
             // Arrange
             var correctUsername = "admin";
             var correctPassword = "admin";
-            var expectedBodyContent = "true";
+            var expectedMessageContent = "true";
 
             // Act
             var httpResponseMessage = await _cookieService.GetCookieInternalAsync(correctUsername, correctPassword);
-            var setCookieValue = httpResponseMessage.Headers.FirstOrDefault(h => h.Key == "Set-Cookie").Value.ToList().First();
-            var messageContent = await httpResponseMessage.Content.ReadAsStringAsync();
 
             // Assert
-            Assert.Equal(expectedBodyContent, messageContent);
+            var messageContent = await httpResponseMessage.Content.ReadAsStringAsync();
+            Assert.Equal(expectedMessageContent, messageContent);
+            var setCookieValue = httpResponseMessage.Headers.FirstOrDefault(h => h.Key == "Set-Cookie").Value.ToList().First();
             Assert.NotNull(setCookieValue);
+        }
+
+        /// <summary>
+        /// Пользователь ввёл некорректные имя и пароль и должен получить false
+        /// </summary>
+        [Fact]
+        public async Task IfUserHaveWrongNameAndWrongPassword_ReturnFalse()
+        {
+            // Arrange
+            var correctUsername = "wrongname";
+            var wrongPassword = "wrongpassword";
+            var expectedMessageContent = "false";
+
+            // Act
+            var httpResponseMessage = await _cookieService.GetCookieInternalAsync(correctUsername, wrongPassword);
+
+            // Assert
+            var messageContent = await httpResponseMessage.Content.ReadAsStringAsync();
+            Assert.Equal(expectedMessageContent, messageContent);
+        }
+
+        /// <summary>
+        /// Пользователь ввёл некорректное имя и корректный пароль и должен получить false
+        /// </summary>
+        [Fact]
+        public async Task IfUserHaveWrongNameAndCorrectPassword_ReturnFalse()
+        {
+            // Arrange
+            var wrongUsername = "wrongname";
+            var correctPassword = "admin";
+            var expectedMessageContent = "false";
+
+            // Act
+            var httpResponseMessage = await _cookieService.GetCookieInternalAsync(wrongUsername, correctPassword);
+
+            // Assert
+            var messageContent = await httpResponseMessage.Content.ReadAsStringAsync();
+            Assert.Equal(expectedMessageContent, messageContent);
         }
 
         /// <summary>
@@ -49,37 +87,16 @@ namespace WebApi.Integration.Tests.Homework
         {
             // Arrange
             var correctUsername = "admin";
-            var wrongPassword = "admin123";
-            var expectedBodyContent = "false";
+            var wrongPassword = "wrongpassword";
+            var expectedMessageContent = "false";
 
             // Act
             var httpResponseMessage = await _cookieService.GetCookieInternalAsync(correctUsername, wrongPassword);
-            var setCookieValue = httpResponseMessage.Headers.FirstOrDefault(h => h.Key == "Set-Cookie").Value.ToList().First();
             var messageContent = await httpResponseMessage.Content.ReadAsStringAsync();
+            var setCookieValue = httpResponseMessage.Headers.FirstOrDefault(h => h.Key == "Set-Cookie").Value.ToList().First();
 
             // Assert
-            Assert.Equal(expectedBodyContent, messageContent);
-            Assert.Null(setCookieValue);
-        }
-
-        /// <summary>
-        /// Пользователь ввёл некорректное имя и корректный пароль и должен получить false
-        /// </summary>
-        [Fact]
-        public async Task IfUserHaveCorrectWrongNameAndPassword_ReturnFalse()
-        {
-            // Arrange
-            var wrongUsername = "admin123";
-            var correctPassword = "admin";
-            var expectedBodyContent = "false";
-
-            // Act
-            var httpResponseMessage = await _cookieService.GetCookieInternalAsync(wrongUsername, correctPassword);
-            var setCookieValue = httpResponseMessage.Headers.FirstOrDefault(h => h.Key == "Set-Cookie").Value.ToList().First();
-            var messageContent = await httpResponseMessage.Content.ReadAsStringAsync();
-
-            // Assert
-            Assert.Equal(expectedBodyContent, messageContent);
+            Assert.Equal(expectedMessageContent, messageContent);
             Assert.Null(setCookieValue);
         }
     }

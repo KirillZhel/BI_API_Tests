@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using WebApi.Integration.Services;
 using WebApi.Models;
@@ -22,31 +24,48 @@ namespace WebApi.Integration.Tests.Homework
             _courseService = new CourseService();
             _courseApiCookie = testFixture.AuthCookie;
         }
-        
 
+        /// <summary>
+        /// Берётся первая страница курсов, копируется и сортируется по Id. В результате отсортированный и неотсортированный списки должны быть равны
+        /// </summary>
         [Fact]
-        public async Task FifthTest_GetPage()
+        public async Task CoursePageIsTaken_ReturnSortedListOfCourses()
         {
             // Arrange
+            var page = 1;
+            var itemsPerPage = 20;
 
             // Act
-            var page = await _courseService.GetPageCourseAsync(2, 20, _courseApiCookie);
-            var copyPage = new List<CourseModel>(page);
+            var courseOnPage = await _courseService.GetPageCourseAsync(page, itemsPerPage, _courseApiCookie);
+            var sortedByIdPage = courseOnPage.OrderBy(c => c.Id).ToList();
 
             // Assert
-            Assert.Equal(copyPage, page);
+            Assert.Equal(sortedByIdPage, courseOnPage);
         }
 
-        //!!! попробовать в автомапере отключить айдишники !!!
+        /// <summary>
+        /// Берётся случайное значение для itemsPerPage, после чего рассчитывается сколько на каждой странице элементов должно быть. Проверяется количество на первой, последней и случайной странице
+        /// </summary>
+        [Fact]
+        public async Task TakenAnyPage_ReturnCorrectCountCourse()
+        {
+            // Arrange
+            Random rnd = new Random();
+            var courseCount = (await _courseService.GetPageCourseAsync(1, 1000000, _courseApiCookie)).Count;
+            var itemsPerPage = rnd.Next(1, 20);
+            var expectedCountCoursePerPage = Enumerable.Repeat(itemsPerPage, courseCount / itemsPerPage).ToList();
+            expectedCountCoursePerPage.Add(courseCount % itemsPerPage);
+            var randomPage = rnd.Next(2, expectedCountCoursePerPage.Count - 1);
 
-        // реализовать метод (смотри метод GetCourseInternalAsync в CourseService) пейджинга на уровне CourseApiClient(namespace WebApi.Integration.Services;) и CourseService(namespace WebApi.Integration.Services;)
-        // ответ на запрос будет являться списком, нужно это учесть при десериализации
-        // перед тестом или в тесте создать предварительно несколько курсов (можно в цикле), чтобы было доступно несколько страниц
-        // проверки: запрос первой страницы + кол-во элементов менее количества существующих элементов
-        // переключение страницы + кол-во элементов больше доступного
-        // комбинация страницы и кол-ва невалидное (так, чтобы заданной страницы не существовало). Например, при общем кол-ве элементов 15, задать страницу 2 и кол-во элементов 20
-        // вместо числовых значений параметров передать нечисловые
-        // передать нулевое значение страницы или кол-ва элементов
-        // передать негативное значение параметров
+            // Act
+            var courseOnFirstPage = await _courseService.GetPageCourseAsync(1, itemsPerPage, _courseApiCookie);
+            var courseOnLastPage = await _courseService.GetPageCourseAsync(expectedCountCoursePerPage.Count, itemsPerPage, _courseApiCookie);
+            var courseOnRandomPage = await _courseService.GetPageCourseAsync(randomPage, itemsPerPage, _courseApiCookie);
+
+            // Assert
+            Assert.Equal(expectedCountCoursePerPage.First(), courseOnFirstPage.Count);
+            Assert.Equal(expectedCountCoursePerPage[randomPage], courseOnRandomPage.Count);
+            Assert.Equal(expectedCountCoursePerPage.Last(), courseOnLastPage.Count);
+        }
     }
 }
