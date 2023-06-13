@@ -25,7 +25,6 @@ namespace WebApi.Models
         /// </summary>
         public List<LessonDto> Lessons { get; set; }
 
-        //-----
         public bool Deleted { get; set; }
         public int Id { get; set; }
     }

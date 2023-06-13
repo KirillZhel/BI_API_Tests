@@ -33,7 +33,7 @@ public class CourseApiClient
         _httpClient.DefaultRequestHeaders.Add("cookie", cookie);
     }
 
-    //My Extends
+    //My methods
     public async Task<HttpResponseMessage> PutCourseAsync(int id, AddCourseModel course, string cookie = null)
     {
         if (cookie != null)

@@ -44,7 +44,7 @@ public class CourseService
         return await _applicationHttpClient.CreateCourseAsync(courseModel, cookie);
     }
 
-    // My Extends
+    // My methods
     public async Task<HttpResponseMessage> UpdateCourseInternalAsync(int id, AddCourseModel courseModel, string cookie = null)
     {
         return await _applicationHttpClient.PutCourseAsync(id, courseModel, cookie);
