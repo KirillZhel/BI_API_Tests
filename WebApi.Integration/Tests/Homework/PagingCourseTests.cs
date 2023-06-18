@@ -37,13 +37,13 @@ namespace WebApi.Integration.Tests.Homework
 
             // Act
             var courseOnPage = await _courseService.GetPageCourseAsync(page, itemsPerPage, _courseApiCookie);
-            var sortedByIdPage = courseOnPage.OrderBy(c => c.Id).ToList();
+            var sortedByIdPage = courseOnPage.OrderBy(c => c.Id).ToList(); //RPRY --> Assert
 
             // Assert
             Assert.Equal(sortedByIdPage, courseOnPage);
         }
 
-        /// <summary>
+        /// <summary> //RPRY если это описание для меня то ОК, но вообще здесь пишется краткая емкая фраза без деталей. "При таких-то условиях вызов такого-то метода должен дать такой-то эффект". Здесь и в других тестах.
         /// Берётся случайное значение для itemsPerPage, после чего рассчитывается сколько на каждой странице элементов должно быть. Проверяется количество на первой, последней и случайной странице
         /// </summary>
         [Fact]
@@ -54,10 +54,10 @@ namespace WebApi.Integration.Tests.Homework
             var courseCount = (await _courseService.GetPageCourseAsync(1, 1000000, _courseApiCookie)).Count;
             var itemsPerPage = rnd.Next(1, 20);
             var expectedCountCoursePerPage = Enumerable.Repeat(itemsPerPage, courseCount / itemsPerPage).ToList();
-            expectedCountCoursePerPage.Add(courseCount % itemsPerPage);
+            expectedCountCoursePerPage.Add(courseCount % itemsPerPage); //RPRY ненужная сложность. Можно задать константное itemsPerPage от этого проверка не пострадает
             var randomPage = rnd.Next(2, expectedCountCoursePerPage.Count - 1);
 
-            // Act
+            // Act //RPRY в Act один вызов, иначе сложно понять что происходит.
             var courseOnFirstPage = await _courseService.GetPageCourseAsync(1, itemsPerPage, _courseApiCookie);
             var courseOnLastPage = await _courseService.GetPageCourseAsync(expectedCountCoursePerPage.Count, itemsPerPage, _courseApiCookie);
             var courseOnRandomPage = await _courseService.GetPageCourseAsync(randomPage, itemsPerPage, _courseApiCookie);

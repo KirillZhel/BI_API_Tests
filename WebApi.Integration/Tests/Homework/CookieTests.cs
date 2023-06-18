@@ -29,7 +29,7 @@ namespace WebApi.Integration.Tests.Homework
             // Arrange
             var correctUsername = "admin";
             var correctPassword = "admin";
-            var expectedMessageContent = "true";
+            var expectedMessageContent = "true"; //RPRY: можно было булевское, true и false, т.е. без кавычек 
 
             // Act
             var httpResponseMessage = await _cookieService.GetCookieInternalAsync(correctUsername, correctPassword);
@@ -92,6 +92,8 @@ namespace WebApi.Integration.Tests.Homework
 
             // Act
             var httpResponseMessage = await _cookieService.GetCookieInternalAsync(correctUsername, wrongPassword);
+            //RPRY строки ниже нужно снести в Assert
+            //"Set-Cookie" повторяется дважды - можно вынести в константы класса
             var messageContent = await httpResponseMessage.Content.ReadAsStringAsync();
             var setCookieValue = httpResponseMessage.Headers.FirstOrDefault(h => h.Key == "Set-Cookie").Value.ToList().First();
 

@@ -39,7 +39,7 @@ namespace WebApi.Integration.Tests.Homework
 
             // Act
             var response = await _courseService.AddCourseInternalAsync(initialCourseModel, _courseApiCookie);
-            var responseMessage = await response.Content.ReadAsStringAsync();
+            var responseMessage = await response.Content.ReadAsStringAsync(); //RPRY Если вам нужен такой результат, нужно сделать в CourseService соотвествующую перегрузку метода. Здесь и в других тестах 
 
             // Assert
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -55,7 +55,7 @@ namespace WebApi.Integration.Tests.Homework
             // Arrange 
             var initialCourseModel = new AddCourseModel
             {
-                Name = "    ",
+                Name = "    ", //RPRY проверять пустую строку а не 4 пробела) И так же можно NULL, параметризовав тест
                 Price = 1000
             };
 
@@ -86,7 +86,7 @@ namespace WebApi.Integration.Tests.Homework
             var response = await _courseService.AddCourseInternalAsync(initialCourseModel, _courseApiCookie);
 
             // Assert
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode); //RPRY лучше запросить созданную сущность из АПИ и убедиться в том что она создана
         }
 
     }

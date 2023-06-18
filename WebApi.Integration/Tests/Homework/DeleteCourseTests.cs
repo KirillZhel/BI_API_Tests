@@ -36,9 +36,9 @@ namespace WebApi.Integration.Tests.Homework
             var courseId = await _courseService.AddCourseAsync(initialCourseModel, _courseApiCookie);
 
             // Act
-            var cource = await _courseService.GetCourseInternalAsync(courseId, _courseApiCookie);
+            var cource = await _courseService.GetCourseInternalAsync(courseId, _courseApiCookie); //RPRY --> Arrange
             await _courseService.DeleteCourseInternalAsync(courseId, _courseApiCookie);
-            var deletedCourse = await _courseService.GetCourseInternalAsync(courseId, _courseApiCookie);
+            var deletedCourse = await _courseService.GetCourseInternalAsync(courseId, _courseApiCookie); //RPRY --> Assert
 
             // Assert
             Assert.False(cource.Deleted);

@@ -38,7 +38,7 @@ namespace WebApi.Integration.Tests.Homework
             var courseId = await _courseService.AddCourseAsync(initialCourseModel, _courseApiCookie);
 
             // Act
-            var updatedCourseModel = new AddCourseModel
+            var updatedCourseModel = new AddCourseModel() //RPRY в этом блоке должен быть только вызов метода. Создание модели - в Arrange, вызов метода - GetCourseInternalAsync - в Arrange    
             {
                 Name = "new_course_name",
                 Price = 10000
