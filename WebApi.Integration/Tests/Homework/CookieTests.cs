@@ -14,6 +14,7 @@ namespace WebApi.Integration.Tests.Homework
     public class CookieTests : IClassFixture<TestFixture>
     {
         private readonly CookieService _cookieService;
+        private const string cookieKey = "Set-Cookie";
 
         public CookieTests(TestFixture testFixture)
         {
@@ -37,7 +38,7 @@ namespace WebApi.Integration.Tests.Homework
             // Assert
             var messageContent = await httpResponseMessage.Content.ReadAsStringAsync();
             Assert.Equal(expectedMessageContent, messageContent);
-            var setCookieValue = httpResponseMessage.Headers.FirstOrDefault(h => h.Key == "Set-Cookie").Value.ToList().First();
+            var setCookieValue = httpResponseMessage.Headers.FirstOrDefault(h => h.Key == cookieKey).Value.ToList().First();
             Assert.NotNull(setCookieValue);
         }
 
@@ -92,13 +93,13 @@ namespace WebApi.Integration.Tests.Homework
 
             // Act
             var httpResponseMessage = await _cookieService.GetCookieInternalAsync(correctUsername, wrongPassword);
-            //RPRY строки ниже нужно снести в Assert
-            //"Set-Cookie" повторяется дважды - можно вынести в константы класса
-            var messageContent = await httpResponseMessage.Content.ReadAsStringAsync();
-            var setCookieValue = httpResponseMessage.Headers.FirstOrDefault(h => h.Key == "Set-Cookie").Value.ToList().First();
+            //+RPRY строки ниже нужно снести в Assert
+            //+"Set-Cookie" повторяется дважды - можно вынести в константы класса
 
             // Assert
+            var messageContent = await httpResponseMessage.Content.ReadAsStringAsync();
             Assert.Equal(expectedMessageContent, messageContent);
+            var setCookieValue = httpResponseMessage.Headers.FirstOrDefault(h => h.Key == cookieKey).Value.ToList().First();
             Assert.Null(setCookieValue);
         }
     }

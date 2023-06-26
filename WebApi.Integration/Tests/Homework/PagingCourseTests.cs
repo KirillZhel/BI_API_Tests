@@ -37,9 +37,9 @@ namespace WebApi.Integration.Tests.Homework
 
             // Act
             var courseOnPage = await _courseService.GetPageCourseAsync(page, itemsPerPage, _courseApiCookie);
-            var sortedByIdPage = courseOnPage.OrderBy(c => c.Id).ToList(); //RPRY --> Assert
 
             // Assert
+            var sortedByIdPage = courseOnPage.OrderBy(c => c.Id).ToList(); //RPRY --> Assert
             Assert.Equal(sortedByIdPage, courseOnPage);
         }
 

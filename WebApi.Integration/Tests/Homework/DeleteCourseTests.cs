@@ -34,14 +34,14 @@ namespace WebApi.Integration.Tests.Homework
                 Price = 1000
             };
             var courseId = await _courseService.AddCourseAsync(initialCourseModel, _courseApiCookie);
+            var cource = await _courseService.GetCourseInternalAsync(courseId, _courseApiCookie); //+RPRY --> Arrange
 
             // Act
-            var cource = await _courseService.GetCourseInternalAsync(courseId, _courseApiCookie); //RPRY --> Arrange
             await _courseService.DeleteCourseInternalAsync(courseId, _courseApiCookie);
-            var deletedCourse = await _courseService.GetCourseInternalAsync(courseId, _courseApiCookie); //RPRY --> Assert
 
             // Assert
             Assert.False(cource.Deleted);
+            var deletedCourse = await _courseService.GetCourseInternalAsync(courseId, _courseApiCookie); //+RPRY --> Assert
             Assert.True(deletedCourse.Deleted);
         }
     }

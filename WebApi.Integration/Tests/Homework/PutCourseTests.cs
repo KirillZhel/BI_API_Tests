@@ -36,18 +36,18 @@ namespace WebApi.Integration.Tests.Homework
                 Price = 1000
             };
             var courseId = await _courseService.AddCourseAsync(initialCourseModel, _courseApiCookie);
-
-            // Act
             var updatedCourseModel = new AddCourseModel() //RPRY в этом блоке должен быть только вызов метода. Создание модели - в Arrange, вызов метода - GetCourseInternalAsync - в Arrange    
             {
                 Name = "new_course_name",
                 Price = 10000
             };
+
+            // Act
             var updateResponse = await _courseService.UpdateCourseInternalAsync(courseId, updatedCourseModel, _courseApiCookie);
-            var updatedCourse = await _courseService.GetCourseInternalAsync(courseId);
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, updateResponse.StatusCode);
+            var updatedCourse = await _courseService.GetCourseInternalAsync(courseId);
             Assert.Equal(updatedCourseModel.Name, updatedCourse.Name);
             Assert.Equal(updatedCourseModel.Price, updatedCourse.Price);
         }

@@ -55,7 +55,7 @@ namespace WebApi.Integration.Tests.Homework
             // Arrange 
             var initialCourseModel = new AddCourseModel
             {
-                Name = "    ", //RPRY проверять пустую строку а не 4 пробела) И так же можно NULL, параметризовав тест
+                Name = "", //+- RPRY проверять пустую строку а не 4 пробела) И так же можно NULL, параметризовав тест
                 Price = 1000
             };
 
